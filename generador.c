@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
 	for (i = 0; i < argc - 2; ++i)
 	{
 		errno = 0;
-		num[i] = strtol(argv[i+2],NULL,10);
+		num[i] = (int) strtol(argv[i+2],NULL,10);
 		if (errno)
 		{
 			printf("Argumento %d invalido.\n", i+1);
@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
 	}
 	if ((fp = fopen(argv[1], "w")) == NULL)
 		perror("fopen:");
-	if (fwrite(&num[0], sizeof(int), argc-1, fp) == 0)
+	if (fwrite(&num[0], sizeof(int), argc-2, fp) == 0)
 		perror("fwrite");
 	fclose(fp);
 	return 0;
