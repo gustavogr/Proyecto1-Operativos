@@ -93,6 +93,33 @@ int main(int argc, char const *argv[])
 		wait(&status);
 		wait(&status);
 
+	} else { // Mas de dos capas ya existen nodos intermedios
+
+		int iniIzq,iniDer,nIzq,nDer,pidI,pidD,status;
+		char inicio[10],cantidad[10];
+		iniIzq = 0;
+		iniDer = n/2;
+		nDer = n/2;
+		nIzq = n - nDer;
+		pidI = fork();
+		if (pidI == 0)
+		{
+			sprintf(inicio, "%d", iniIzq);
+			sprintf(cantidad, "%d", nIzq);
+			execl("./rama","./rama",archEntrada,inicio,cantidad,(char *)0);
+			perror("No deberias estar aqui. exec");
+		}
+		pidD = fork();
+		if (pidD == 0)
+		{
+			sprintf(inicio, "%d", iniDer);
+			sprintf(cantidad, "%d", nDer);
+			execl("./rama","./rama",archEntrada,inicio,cantidad,(char *)0);
+			perror("No deberias estar aqui. exec"); 
+		}
+		wait(&status);
+		wait(&status);
+
 	}
 
 
