@@ -1,1 +1,1 @@
-# include
+void main()
