@@ -2,7 +2,8 @@
 
 int main(int argc, char const *argv[])
 {
-	char *archEntrada = argv[3];
+	char const *archEntrada = argv[3];
+	char const *archSalida = argv[4];
 	int capas,n;
 	errno = 0;
 	n = (int) strtol(argv[1],NULL,10);
@@ -21,7 +22,7 @@ int main(int argc, char const *argv[])
 		perror("Error leyendo el numero de niveles");
 		return 1;
 	}
-	if (2^(capas-1)<n)
+	if ((2^(capas-1))>n)
 	{
 		printf("ERROR: Hay mas hojas que enteros a ordenar.\n");
 		return 1;
@@ -43,12 +44,54 @@ int main(int argc, char const *argv[])
 			perror("fopen");
 			return 1;
 		}
-
+		// Leemos el arreglo
 		if (fread(&arreglo[0], sizeof(int), n, fp) == 0) {
 			perror("fread");
 			return 1;
 		}
 		fclose(fp);
+		// Ordenamos el archivo
+		quicksort(arreglo, n);
+		// Escribimos el archivo
+		if ((fp = fopen(archSalida, "w+")) == NULL) {
+			perror("fopen");
+			return 1;
+		}
+		int i;
+		for (i = 0; i < n; ++i)
+		{
+			fprintf(fp, "%d ",arreglo[i]);
+		}
+		fprintf(fp, "\n");
+		fclose(fp);
+
+	}
+	else if (capas == 2) // Si son dos capas, los hijos inmediatos son hojas.
+	{
+		int iniIzq,iniDer,nIzq,nDer,pidI,pidD,status;
+		char inicio[10],cantidad[10];
+		iniIzq = 0;
+		iniDer = n/2;
+		nDer = n/2;
+		nIzq = n - nDer;
+		pidI = fork();
+		if (pidI == 0)
+		{
+			sprintf(inicio, "%d", iniIzq);
+			sprintf(cantidad, "%d", nIzq);
+			execl("./hoja","./hoja",archEntrada,inicio,cantidad,(char *)0);
+			perror("No deberias estar aqui. exec");
+		}
+		pidD = fork();
+		if (pidD == 0)
+		{
+			sprintf(inicio, "%d", iniDer);
+			sprintf(cantidad, "%d", nDer);
+			execl("./hoja","./hoja",archEntrada,inicio,cantidad,(char *)0);
+			perror("No deberias estar aqui. exec"); 
+		}
+		wait(&status);
+		wait(&status);
 
 	}
 
