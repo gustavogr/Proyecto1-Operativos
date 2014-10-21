@@ -1,10 +1,21 @@
 #include "procesos.h"
 
+int Tomar_Tiempo()
+{
+	struct timeval t;     /* usado para tomar los tiempos */
+	int dt;
+	gettimeofday ( &t, (struct timezone*)0 );
+	dt = (t.tv_sec)*1000000 + t.tv_usec;
+	return dt;
+}
+
 int main(int argc, char const *argv[])
 {
 	char const *archEntrada = argv[3];
 	char const *archSalida = argv[4];
 	int capas,n;
+	int Tiempo_Inicial,Tiempo_Final;
+
 	errno = 0;
 	n = (int) strtol(argv[1],NULL,10);
 		
@@ -36,7 +47,7 @@ int main(int argc, char const *argv[])
 	}
 
 	// Fin de verificacion
-
+	Tiempo_Inicial = Tomar_Tiempo();
 	if (capas == 1) // Si es solo una capa todo lo procesa el proceso raiz.
 	{
 		FILE *fp;
@@ -167,7 +178,6 @@ int main(int argc, char const *argv[])
 			sprintf(cantidad, "%d", nIzq);
 			sprintf(capasH, "%d",capas-2);
 			execl("./rama","./rama",archEntrada,inicio,cantidad,capasH,(char *)0);
-			perror("No deberias estar aqui. exec");
 		}
 		pidD = fork();
 		if (pidD == 0)
@@ -176,7 +186,6 @@ int main(int argc, char const *argv[])
 			sprintf(capasH, "%d",capas-2);
 			sprintf(cantidad, "%d", nDer);
 			execl("./rama","./rama",archEntrada,inicio,cantidad,capasH,(char *)0);
-			perror("No deberias estar aqui. exec"); 
 		}
 		// Esperamos a los hijos, verificamos que no hayn fallado.
 		wait(&status);
@@ -239,10 +248,8 @@ int main(int argc, char const *argv[])
 		remove(archDer);
 	}
 
-
-
-
-
+	Tiempo_Final = Tomar_Tiempo();
+	printf("Nodo Raiz. Tiempo de ejecucion: %f ms.\n",(double)(Tiempo_Final - Tiempo_Inicial)/1000);
 
 	exit(0);
 }

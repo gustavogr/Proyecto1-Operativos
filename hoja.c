@@ -1,7 +1,19 @@
 #include "hoja.h"
 
+int Tomar_Tiempo()
+{
+	struct timeval t;     /* usado para tomar los tiempos */
+	int dt;
+	gettimeofday ( &t, (struct timezone*)0 );
+	dt = (t.tv_sec)*1000000 + t.tv_usec;
+	return dt;
+}
+
 int main(int argc, char const *argv[])
 {
+	int Tiempo_Inicial,Tiempo_Final;
+	Tiempo_Inicial = Tomar_Tiempo();
+
 	char const *archivoE;
 	char archivoS[10];
 	int inicio,cantidad;
@@ -39,5 +51,8 @@ int main(int argc, char const *argv[])
 	if (fwrite(&arreglo[0], sizeof(int), cantidad, fp) == 0)
 		perror("fwrite");
 	fclose(fp);
+	Tiempo_Final = Tomar_Tiempo();
+	printf("Nodo Hoja PID %d. ",getpid());
+	printf("Tiempo de ejecucion: %f ms.\n",(double)(Tiempo_Final - Tiempo_Inicial)/1000);
 	return 0;
 }

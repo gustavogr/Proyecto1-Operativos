@@ -1,7 +1,18 @@
 #include "rama.h"
 
+int Tomar_Tiempo()
+{
+	struct timeval t;     /* usado para tomar los tiempos */
+	int dt;
+	gettimeofday ( &t, (struct timezone*)0 );
+	dt = (t.tv_sec)*1000000 + t.tv_usec;
+	return dt;
+}
+
 int main(int argc, char *argv[]){
 	// Se almacenan los parametros.
+	int Tiempo_Inicial,Tiempo_Final;
+	Tiempo_Inicial = Tomar_Tiempo();
 	int pos_ini = atoi(argv[2]);
 	int cant_elem = atoi(argv[3]);
 	int capas_rest = atoi(argv[4]);
@@ -89,5 +100,8 @@ int main(int argc, char *argv[]){
 	free(arreglo);
 	remove(arch_izq);
 	remove(arch_der);
+	Tiempo_Final = Tomar_Tiempo();
+	printf("Nodo Rama PID %d. ",getpid());
+	printf("Tiempo de ejecucion: %f ms.\n",(double)(Tiempo_Final - Tiempo_Inicial)/1000 );
 	exit(0);
 }
