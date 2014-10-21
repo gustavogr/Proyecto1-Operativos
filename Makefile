@@ -1,17 +1,21 @@
-OBJSP = procesos.o quicksort.o
+OBJSP = procesos.o ordenamiento.o
 OBJSH =
 CC = gcc
 DEBUG = -g
-CFLAGS = -Wall -c $(DEBUG)
-LFLAGS = -Wall $(DEBUG)
+CFLAGS = $(DEBUG) -Wall -c
+LFLAGS = $(DEBUG) -Wall
 .SUFFIXES: .o .c  # store important suffixes in the .SUFFIXES macro
 
-all: ordenArchivo-p clean
+all: ordenArchivo-p
 
-ordenArchivo-p: $(OBJSP)
-	$(CC) $(LFLAGS) $(OBJSP) -o $@	
+ordenArchivo-p: $(OBJSP) hoja
+	$(CC) $(LFLAGS) -lm $(OBJSP) -o $@	
+
+hoja: ordenamiento.o
+	$(CC) $(LFLAGS) ordenamiento.o hoja.c -o $@
+
 .c.o:
-	gcc -c $<
+	gcc $(CFLAGS) $<
 	
 clean:
 	rm -f *.o

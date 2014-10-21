@@ -22,7 +22,8 @@ int main(int argc, char const *argv[])
 		perror("Error leyendo el numero de niveles");
 		return 1;
 	}
-	if ((2^(capas-1))>n)
+
+	if ( pow(2,capas-1) > n )
 	{
 		printf("ERROR: Hay mas hojas que enteros a ordenar.\n");
 		return 1;
@@ -91,8 +92,16 @@ int main(int argc, char const *argv[])
 			perror("No deberias estar aqui. exec"); 
 		}
 		wait(&status);
+		if (status)
+		{
+			printf("ERROR: hijo izquierdo PID %d fallo.\n",pidI);
+		}
 		wait(&status);
-
+		if (status)
+		{
+			printf("ERROR: hijo izquierdo PID %d fallo.\n",pidI);
+		}
+		
 	} else { // Mas de dos capas ya existen nodos intermedios
 
 		int iniIzq,iniDer,nIzq,nDer,pidI,pidD,status;
