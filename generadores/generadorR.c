@@ -5,6 +5,13 @@
 
 int main(int argc, char const *argv[])
 {
+	
+	if (argc != 3)
+	{
+		printf("Uso: %s archivoSalida cantNumeros\n",argv[0]);
+		return 1;
+	}
+
 	int cant;
 	errno = 0;
 	cant = (int)strtol(argv[2], (char **)NULL, 10);

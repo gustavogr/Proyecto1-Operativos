@@ -4,9 +4,9 @@
 
 int main(int argc, char const *argv[])
 {
-	if (argc == 1)
+	if (argc < 3)
 	{
-		printf("No hay argumentos.\n");
+		printf("Uso: %s archivoSalida n1 n2 n3 ...\n",argv[0]);
 		return 1;
 	}
 	int i,num[argc-2];

@@ -10,6 +10,13 @@ int Tomar_Tiempo()
 }
 
 int main(int argc, char *argv[]){
+	
+	if (argc != 5)
+	{
+		printf("ERROR: error en el numero de argumentos de %s.\n",argv[0]);
+		exit(1);
+	}
+
 	// Se almacenan los parametros.
 	int Tiempo_Inicial,Tiempo_Final;
 	Tiempo_Inicial = Tomar_Tiempo();

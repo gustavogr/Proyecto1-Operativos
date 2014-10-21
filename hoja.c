@@ -11,6 +11,12 @@ int Tomar_Tiempo()
 
 int main(int argc, char const *argv[])
 {
+	
+	if (argc != 4)
+	{
+		printf("ERROR: error en el numero de argumentos de %s.\n",argv[0]);
+	}
+
 	int Tiempo_Inicial,Tiempo_Final;
 	Tiempo_Inicial = Tomar_Tiempo();
 

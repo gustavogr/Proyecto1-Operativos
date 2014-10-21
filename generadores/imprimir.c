@@ -4,6 +4,13 @@
 
 int main(int argc, char const *argv[])
 {
+	
+	if (argc!=3)
+	{
+		printf("Uso: %s archivoEntrada cantidadNumeros \n",argv[0]);
+		return 1;
+	}
+
 	int cant,i;
 	errno = 0;
 	cant = (int)strtol(argv[2], (char **)NULL, 10);

@@ -11,6 +11,13 @@ int Tomar_Tiempo()
 
 int main(int argc, char const *argv[])
 {
+	if (argc!=5)
+	{
+		printf("Uso: %s NumEnteros NumNiveles ArchivoEnterosDesordenado ",argv[0]);
+		printf("ArchivoEnterosOrdenado\n");
+		exit(1);
+	}
+
 	char const *archEntrada = argv[3];
 	char const *archSalida = argv[4];
 	int capas,n;
