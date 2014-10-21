@@ -13,26 +13,26 @@ int main(int argc, char const *argv[])
 	if (errno)
 	{
 		perror("Error leyendo el numero de enteros");
-		return 1;
+		exit(1);
 	}
 	errno = 0;
 	capas = (int) strtol(argv[2],NULL,10);
 	if (errno)
 	{
 		perror("Error leyendo el numero de niveles");
-		return 1;
+		exit(1);
 	}
 
 	if ( pow(2,capas-1) > n )
 	{
 		printf("ERROR: Hay mas hojas que enteros a ordenar.\n");
-		return 1;
+		exit(1);
 	}
 	if (capas < 1 || n < 1)
 	{
 		printf("ERROR: Argumentos invalidos. NumEnteros y NumNiveles deben ser");
 		printf(" mayores que 0.\n");
-		return 1;
+		exit(1);
 	}
 
 	// Fin de verificacion
@@ -43,12 +43,12 @@ int main(int argc, char const *argv[])
 		int arreglo[n];
 		if ((fp = fopen(archEntrada, "r")) == NULL) {
 			perror("fopen");
-			return 1;
+			exit(1);
 		}
 		// Leemos el arreglo
 		if (fread(&arreglo[0], sizeof(int), n, fp) == 0) {
 			perror("fread");
-			return 1;
+			exit(1);
 		}
 		fclose(fp);
 		// Ordenamos el archivo
@@ -56,7 +56,7 @@ int main(int argc, char const *argv[])
 		// Escribimos el archivo
 		if ((fp = fopen(archSalida, "w+")) == NULL) {
 			perror("fopen");
-			return 1;
+			exit(1);
 		}
 		int i;
 		for (i = 0; i < n; ++i)
@@ -97,11 +97,13 @@ int main(int argc, char const *argv[])
 		if (status)
 		{
 			printf("ERROR: hijo PID %d fallo.\n",pidI);
+			exit(1);
 		}
 		wait(&status);
 		if (status)
 		{
 			printf("ERROR: hijo PID %d fallo.\n",pidD);
+			exit(1);
 		}
 
 		// Inicializamos arreglos auxiliares
@@ -113,22 +115,22 @@ int main(int argc, char const *argv[])
 		FILE *fp;
 		// Leemos archivo del primer hijo		
 		if ((fp = fopen(archIzq, "r")) == NULL) {
-			perror("**fopen");
-			exit(0);
+			perror("fopen");
+			exit(1);
 		}
 		if (fread(&arregloI[0], sizeof(int), nIzq, fp) == 0) {
 			perror("fread");
-			exit(0);
+			exit(1);
 		}
 		fclose(fp);
 		// Leemos archivo del segundo hijo
 		if ((fp = fopen(archDer, "r")) == NULL) {
-			perror("**fopen");
-			exit(0);
+			perror("fopen");
+			exit(1);
 		}
 		if (fread(&arregloD[0], sizeof(int), nDer, fp) == 0) {
 			perror("fread");
-			exit(0);
+			exit(1);
 		}
 		fclose(fp);
 		// Merge de los dos arreglos
@@ -137,7 +139,7 @@ int main(int argc, char const *argv[])
 		int i;
 		if ((fp = fopen(archSalida, "w+")) == NULL) {
 			perror("fopen");
-			exit(0);
+			exit(1);
 		}
 		for (i = 0; i < n; ++i)
 		{
@@ -153,7 +155,7 @@ int main(int argc, char const *argv[])
 	} else { // Mas de dos capas ya existen nodos intermedios
 
 		int iniIzq,iniDer,nIzq,nDer,pidI,pidD,status;
-		char inicio[10],cantidad[10];
+		char inicio[10],cantidad[10],capasH[3];
 		iniIzq = 0;
 		iniDer = n/2;
 		nIzq = n/2;
@@ -163,27 +165,31 @@ int main(int argc, char const *argv[])
 		{
 			sprintf(inicio, "%d", iniIzq);
 			sprintf(cantidad, "%d", nIzq);
-			execl("./rama","./rama",archEntrada,inicio,cantidad,(char *)0);
+			sprintf(capasH, "%d",capas-2);
+			execl("./rama","./rama",archEntrada,inicio,cantidad,capasH,(char *)0);
 			perror("No deberias estar aqui. exec");
 		}
 		pidD = fork();
 		if (pidD == 0)
 		{
 			sprintf(inicio, "%d", iniDer);
+			sprintf(capasH, "%d",capas-2);
 			sprintf(cantidad, "%d", nDer);
-			execl("./rama","./rama",archEntrada,inicio,cantidad,(char *)0);
+			execl("./rama","./rama",archEntrada,inicio,cantidad,capasH,(char *)0);
 			perror("No deberias estar aqui. exec"); 
 		}
 		// Esperamos a los hijos, verificamos que no hayn fallado.
 		wait(&status);
 		if (status)
 		{
-			printf("ERROR: hijo PID %d fallo.\n",pidI);
+			printf("ERROR: hijo fallo. Devolvio %d \n",status);
+			exit(status);
 		}
 		wait(&status);
 		if (status)
 		{
 			printf("ERROR: hijo PID %d fallo.\n",pidD);
+			exit(status);
 		}
 
 		// Inicializamos arreglos auxiliares
@@ -196,21 +202,21 @@ int main(int argc, char const *argv[])
 		// Leemos archivo del primer hijo		
 		if ((fp = fopen(archIzq, "r")) == NULL) {
 			perror("fopen");
-			exit(0);
+			exit(1);
 		}
 		if (fread(&arregloI[0], sizeof(int), nIzq, fp) == 0) {
 			perror("fread");
-			exit(0);
+			exit(1);
 		}
 		fclose(fp);
 		// Leemos archivo del segundo hijo
 		if ((fp = fopen(archDer, "r")) == NULL) {
 			perror("fopen");
-			exit(0);
+			exit(1);
 		}
 		if (fread(&arregloD[0], sizeof(int), nDer, fp) == 0) {
 			perror("fread");
-			exit(0);
+			exit(1);
 		}
 		fclose(fp);
 		// Merge de los dos arreglos
@@ -219,7 +225,7 @@ int main(int argc, char const *argv[])
 		int i;
 		if ((fp = fopen(archSalida, "w+")) == NULL) {
 			perror("fopen");
-			exit(0);
+			exit(1);
 		}
 		for (i = 0; i < n; ++i)
 		{
@@ -231,7 +237,6 @@ int main(int argc, char const *argv[])
 		free(arregloF);
 		remove(archIzq);
 		remove(archDer);
-
 	}
 
 
@@ -239,5 +244,5 @@ int main(int argc, char const *argv[])
 
 
 
-	return 0;
+	exit(0);
 }

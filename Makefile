@@ -6,7 +6,7 @@ CFLAGS = $(DEBUG) -Wall -c
 LFLAGS = $(DEBUG) -Wall
 .SUFFIXES: .o .c  # store important suffixes in the .SUFFIXES macro
 
-all: ordenArchivo-p
+all: ordenArchivo-p clean
 
 ordenArchivo-p: $(OBJSP) hoja rama
 	$(CC) $(LFLAGS) -lm $(OBJSP) -o $@	

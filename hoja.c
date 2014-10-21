@@ -23,12 +23,13 @@ int main(int argc, char const *argv[])
 		perror("fseek");
 		exit(0);
 	}
+
 	if (fread(&arreglo[0], sizeof(int), cantidad, fp) == 0) {
-		perror("fread");
+		perror("fread3");
 		exit(0);
 	}
 	fclose(fp);
-
+	
 	quicksort(arreglo,cantidad);
 
 	if ((fp = fopen(archivoS, "w+")) == NULL) {

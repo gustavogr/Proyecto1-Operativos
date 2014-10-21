@@ -15,19 +15,20 @@ int main(int argc, char *argv[]){
 	// 
 	pid_t pid_izq, pid_der;
 	if ((pid_izq = fork()) == 0) {
+		sprintf(cantidad, "%d", izq_cant);
+		sprintf(inicio, "%d", izq_ini);
+		sprintf(capas, "%d", capas_rest -1);
 		if (capas_rest > 1) {
-			sprintf(cantidad, "%d", izq_cant);
-			sprintf(inicio, "%d", izq_ini);
-			sprintf(capas, "%d", capas_rest -1);
 			execl("./rama", "./rama", argv[1], inicio, cantidad, capas, (char *) 0);
 		} else {
 			execl("./hoja", "./hoja", argv[1], inicio, cantidad, (char *) 0);
 		}
 	}
 	if ((pid_der = fork()) == 0) {
+		sprintf(cantidad, "%d", der_cant);
+		sprintf(inicio, "%d", der_ini);
+		sprintf(capas, "%d", capas_rest -1);
 		if (capas_rest > 1) {
-			sprintf(cantidad, "%d", der_cant);
-			sprintf(inicio, "%d", der_ini);
 			execl("./rama", "./rama", argv[1], inicio, cantidad, capas, (char *) 0);
 		} else {
 			execl("./hoja", "./hoja", argv[1], inicio, cantidad, (char *) 0);
@@ -57,37 +58,36 @@ int main(int argc, char *argv[]){
 	// Archivo izquierdo:
 	if ((fp = fopen(arch_izq, "r")) == NULL) {
 		perror("fopen");
-		return 1;
+		exit(1);
 	}
 	if (fread(&arregloi[0], sizeof(int), izq_cant, fp) == 0) {
-		perror("fread");
-		return 1;
+		perror("fread1");
+		exit(1);
 	}
 	fclose(fp);
 	// Archivo derecho:
 	if ((fp = fopen(arch_der, "r")) == NULL) {
 		perror("fopen");
-		return 1;
+		exit(1);
 	}
 	if (fread(&arreglod[0], sizeof(int), der_cant, fp) == 0) {
-		perror("fread");
-		return 1;
+		perror("fread2");
+		exit(1);
 	}
 	fclose(fp);
 	// Se hace merge de los arreglos y se guarda en el arreglo propio:
 	int *arreglo = merge(arregloi, arreglod, izq_cant, der_cant);
 	// Se escribe dicho arreglo en el archivo propio:
+
 	if ((fp = fopen(arch_propio, "w+")) == NULL) {
 		perror("fopen");
-		return 1;
+		exit(1);
 	}
-	int i;
-	for (i = 0; i < cant_elem; ++i)
-	{
-		fprintf(fp, "%d ", arreglo[i]);
-	}
-	fprintf(fp, "\n");
+	if (fwrite(&arreglo[0], sizeof(int), cant_elem, fp) == 0)
+		perror("fwrite");
 	fclose(fp);
 	free(arreglo);
+	remove(arch_izq);
+	remove(arch_der);
 	exit(0);
 }
