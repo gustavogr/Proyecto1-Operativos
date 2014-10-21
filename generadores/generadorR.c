@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
 	srand(time(NULL));
 	for (i = 0; i < cant; ++i)
 	{
-		num[i] = rand();
+		num[i] = rand() % 1000;
 	}
 
 
