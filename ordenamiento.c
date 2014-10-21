@@ -2,7 +2,7 @@
 
 int * merge(int arreglo1[], int arreglo2[], int tam1, int tam2)
 {
-    int *auxiliar =(int *)malloc(sizeof(arreglo1) + sizeof(arreglo2));
+    int *auxiliar =(int *)malloc(sizeof(int)*(tam1+tam2));
     int i = 0, j = 0, k = 0;
     while ((i <= (tam1 - 1)) && (j <= (tam2 - 1))) {
         if (arreglo1[i] <= arreglo2[j]) {

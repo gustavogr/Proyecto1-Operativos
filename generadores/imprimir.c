@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
 	FILE *fp;
 	int num1[cant];
 	if ((fp = fopen(argv[1], "r")) == NULL) {
-		perror("**fopen");
+		perror("fopen");
 		exit(0);
 	}
 	if (fread(&num1[0], sizeof(int), cant, fp) == 0) {
