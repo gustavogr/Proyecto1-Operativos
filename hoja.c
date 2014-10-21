@@ -15,6 +15,7 @@ int main(int argc, char const *argv[])
 	if (argc != 4)
 	{
 		printf("ERROR: error en el numero de argumentos de %s.\n",argv[0]);
+		exit(1);
 	}
 
 	int Tiempo_Inicial,Tiempo_Final;
@@ -33,18 +34,23 @@ int main(int argc, char const *argv[])
 
 	if ((fp = fopen(archivoE, "r")) == NULL) {
 		perror("fopen");
-		exit(0);
+		exit(1);
 	}
 
 	if (fseek(fp,inicio*sizeof(int),SEEK_SET))
 	{
 		perror("fseek");
-		exit(0);
+		exit(1);
 	}
-
-	if (fread(&arreglo[0], sizeof(int), cantidad, fp) == 0) {
-		perror("fread3");
-		exit(0);
+	int c;
+	if ((c = fread(&arreglo[0], sizeof(int), cantidad, fp)) < cantidad) {
+		if (c == 0)
+		{
+			perror("fread3");
+		} else {
+			printf("ERROR: el archivo especificado no tiene suficientes enteros.\n");
+		}
+		exit(1);
 	}
 	fclose(fp);
 	
@@ -52,7 +58,7 @@ int main(int argc, char const *argv[])
 
 	if ((fp = fopen(archivoS, "w+")) == NULL) {
 		perror("fopen");
-		exit(0);
+		exit(1);
 	}
 	if (fwrite(&arreglo[0], sizeof(int), cantidad, fp) == 0)
 		perror("fwrite");

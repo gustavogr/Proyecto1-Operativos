@@ -57,12 +57,14 @@ int main(int argc, char *argv[]){
 	wait(&status);
 	if (status)
 	{
-		printf("ERROR: hijo %d fallo.\n",pid_izq);
+		printf("ERROR: hijo fallo. Devolvio %d \n",status);
+		exit(0);
 	}
 	wait(&status);
 	if (status)
 	{
-		printf("ERROR: hijo %d fallo.\n",pid_der);
+		printf("ERROR: hijo fallo. Devolvio %d \n",status);
+		exit(0);
 	}
 	// Despues de que los hijos terminan
 	char arch_izq[10], arch_der[10], arch_propio[10];

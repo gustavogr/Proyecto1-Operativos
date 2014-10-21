@@ -12,14 +12,19 @@ int Tomar_Tiempo()
 
 void* hoja (void *param)
 {
-
+	int Tiempo_Inicial,Tiempo_Final;
+	Tiempo_Inicial = Tomar_Tiempo();
 	datos_hilos *datos = (datos_hilos *) param;	
 	quicksort_rec(datos->arreglo,datos->inicio,datos->cantidad-1+datos->inicio);
+	Tiempo_Final = Tomar_Tiempo();
+	printf("Hilo hoja. Tiempo de ejecucion: %f ms.\n",(double)(Tiempo_Final - Tiempo_Inicial)/1000);
 	return 0;
 }
 
 void* rama (void *param)
 {
+	int Tiempo_Inicial,Tiempo_Final;
+	Tiempo_Inicial = Tomar_Tiempo();
 	datos_hilos* datos = (datos_hilos *) param;
 	pthread_t hiloIzq, hiloDer;
 	int ini,cant;
@@ -56,7 +61,8 @@ void* rama (void *param)
 	free(datosIzq);
 	free(datosDer);
 	free(auxiliar);
-
+	Tiempo_Final = Tomar_Tiempo();
+	printf("Hilo rama. Tiempo de ejecucion: %f ms.\n",(double)(Tiempo_Final - Tiempo_Inicial)/1000);
 	return 0;
 }
 
@@ -180,8 +186,7 @@ int main(int argc, char const *argv[])
 		free(auxiliar);
 	}
 	Tiempo_Final = Tomar_Tiempo();
-	printf("Timpo total: %d\n",Tiempo_Final - Tiempo_Inicial);
-
+	printf("Main. Tiempo de ejecucion: %f ms.\n",(double)(Tiempo_Final - Tiempo_Inicial)/1000);
 
 	return 0;
 }
