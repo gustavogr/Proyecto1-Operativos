@@ -8,12 +8,14 @@ LFLAGS = $(DEBUG) -Wall
 
 all: ordenArchivo-p
 
-ordenArchivo-p: $(OBJSP) hoja
+ordenArchivo-p: $(OBJSP) hoja rama
 	$(CC) $(LFLAGS) -lm $(OBJSP) -o $@	
 
 hoja: ordenamiento.o
 	$(CC) $(LFLAGS) ordenamiento.o hoja.c -o $@
 
+rama: ordenamiento.o
+	$(CC) $(LFLAGS) ordenamiento.o rama.c -o $@
 .c.o:
 	gcc $(CFLAGS) $<
 	
