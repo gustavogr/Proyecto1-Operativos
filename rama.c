@@ -8,7 +8,7 @@ int main(int argc, char *argv[]){
 	// Se asignan los limites y las cantidades a pasar a los hijos.
 	int izq_ini = pos_ini;
 	int izq_cant = cant_elem/2;
-	int der_ini = pos_ini + cant_elem/2 + 1;
+	int der_ini = pos_ini + cant_elem/2;
 	int der_cant = cant_elem - izq_cant;
 	char inicio[10], cantidad[10], capas[2];
 	int status;
@@ -19,21 +19,22 @@ int main(int argc, char *argv[]){
 			sprintf(cantidad, "%d", izq_cant);
 			sprintf(inicio, "%d", izq_ini);
 			sprintf(capas, "%d", capas_rest -1);
-			execl("./rama", "./rama", argv[0], inicio, cantidad, capas, (char *) 0);
+			execl("./rama", "./rama", argv[1], inicio, cantidad, capas, (char *) 0);
 		} else {
-			execl("./hoja", "./hoja", argv[0], inicio, cantidad, (char *) 0);
+			execl("./hoja", "./hoja", argv[1], inicio, cantidad, (char *) 0);
 		}
 	}
 	if ((pid_der = fork()) == 0) {
 		if (capas_rest > 1) {
 			sprintf(cantidad, "%d", der_cant);
 			sprintf(inicio, "%d", der_ini);
-			execl("./rama", "./rama", argv[0], inicio, cantidad, capas, (char *) 0);
+			execl("./rama", "./rama", argv[1], inicio, cantidad, capas, (char *) 0);
 		} else {
-			execl("./hoja", "./hoja", argv[0], inicio, cantidad, (char *) 0);
+			execl("./hoja", "./hoja", argv[1], inicio, cantidad, (char *) 0);
 		}
 	}
 	// Codigo realizado por el padre
+	
 	wait(&status);
 	if (status)
 	{
