@@ -64,7 +64,7 @@ int * merge_h(int arreglo[], int ini, int med, int fin)
 }
 
 
-int main(int argc, const char * argv[])
+/*int main(int argc, const char * argv[])
 {
     int lista1[] = {1, 3, 5 , 7, 9};
     int lista2[] = {0, 2, 4 , 6, 8, 8, 8, 8, 10, 12};
@@ -95,10 +95,10 @@ int main(int argc, const char * argv[])
     for (g = 0; g < t4; g++){
         printf("%d ", lista4[g]);
     }
-    printf("\n");
+    printf("\n");*/
     /*printf("quicksort procesos:\n");      
     for (g = 0; g < t4; g++){
         printf("%d ", lista4[g]);
     }
-    printf("\n")*/;
-}
+    printf("\n");
+}*/

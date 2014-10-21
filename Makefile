@@ -12,7 +12,7 @@ ordenArchivo-p: $(OBJSP) hoja rama
 	$(CC) $(LFLAGS) -lm $(OBJSP) -o $@
 
 ordenArchivo-t: $(OBJSH)
-	$(CC) $(LFLAGS) -lm -lpthread $(OBJSP) -o $@	
+	$(CC) $(LFLAGS) -lm -lpthread $(OBJSH) -o $@	
 
 hoja: ordenamiento.o
 	$(CC) $(LFLAGS) ordenamiento.o hoja.c -o $@

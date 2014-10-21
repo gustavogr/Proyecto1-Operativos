@@ -8,9 +8,13 @@
 
 int Tomar_Tiempo();
 
-typedef struct datos_hilo {
+void* hoja (void *datos);
+
+void* rama (void *datos);
+
+typedef struct datos_hilos {
 	int *arreglo;
 	int inicio;
 	int cantidad;
 	int capas;
-} datos_hilo;
+}datos_hilos;
